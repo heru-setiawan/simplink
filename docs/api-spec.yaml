@@ -1,0 +1,139 @@
+openapi: '3.0.2'
+info:
+  title: Simplink API
+  version: '1.0'
+servers:
+  - url: http://localhost:8000
+paths:
+  /{shorten-link}:
+    get:
+      tags:
+        - "Link"
+      summary: 'Access Short Link'
+      parameters:
+        - $ref: '#/components/parameters/shorten-link'
+      responses:
+        '302':
+          $ref: '#/components/responses/get_link_302'
+        '404':
+          $ref: '#/components/responses/default_404'
+        '500':
+          $ref: '#/components/responses/default_500'
+  /links:
+    post:
+      tags:
+        - "Link"
+      responses:
+        '201':
+          $ref: '#/components/responses/create_link_201'
+        '400':
+          $ref: '#/components/responses/create_link_400'
+        '404':
+          $ref: '#/components/responses/default_404'
+        '500':
+          $ref: '#/components/responses/default_500'
+
+components:
+  schemas:
+    link:
+      type: object
+      properties:
+        short:
+          type: string
+          format: uri
+          maxLength: 16
+        destination:
+          type: string
+          format: uri
+        expired_at:
+          type: string
+          format: date-time
+
+    default_response:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/link'
+          
+  parameters:
+    shorten-link:
+      in: path
+      name: 'shorten-link'
+      required: true
+      schema:
+        type: string
+        example: 'xV37b8'
+  
+  requestBodies:
+    createLink:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - 'destination'
+            properties:
+              short: 
+                $ref: '#/components/schemas/link/properties/short'
+              destination: 
+                $ref: '#/components/schemas/link/properties/destination'
+  
+  responses:
+    'default_404':
+      description: 'not found'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/default_response'
+          example:
+            message: 'not found'
+    'default_500':
+      description: 'internal server error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/default_response'
+          example:
+            message: 'Sorry, an error occurred on the server'
+    
+    'create_link_201':
+      description: 'bad request'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/default_response'
+          example:
+            message: 'link shortened successfully'
+            data:
+              short: 'http://localhost:8000/xV37b8'
+              destination: 'https://google.com/'
+              expired_at: '2024-02-08T17:32:28Z'
+    'create_link_400':
+      description: 'bad request'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/default_response'
+          examples:
+            'empty destination link':
+              value:
+                message: 'destination link must be filled in'
+            'maximum custom short link character':
+              value:
+                message: 'custom short link must less than 16 character'
+    'create_link_409':
+      description: 'conflict'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/default_response'
+          examples:
+            'custom short link exist':
+              value:
+                message: 'custom short link already exist'
+    
+    'get_link_302':
+      description: 'temporary redirect'
+    
