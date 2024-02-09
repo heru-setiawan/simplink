@@ -1,10 +1,9 @@
 FROM golang:1.22.0-alpine
 
-COPY . ./app
-
+COPY . /app
 WORKDIR /app
 
 RUN go mod download
-RUN go build -o api .
+RUN CGO_ENABLED=0 GOOS=linux go build -o api .
 
-CMD [ "/api" ]
+CMD [ "/app/api" ]
