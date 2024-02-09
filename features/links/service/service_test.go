@@ -47,6 +47,22 @@ func TestGetByShortLink(t *testing.T) {
 		repo.AssertExpectations(t)
 	})
 
+	t.Run("expired link", func(t *testing.T) {
+		caseRepoResult := &core.Link{
+			Short:       "example",
+			Destination: "https://www.google.com",
+			ExpiredAt:   time.Now().Add(-time.Hour),
+		}
+		repo.On("GetByShort", ctx, "example").Return(caseRepoResult, nil).Once()
+
+		result, err := srv.GetByShort(ctx, "example")
+		assert.ErrorAs(t, err, &exceptions.Validation{})
+		assert.ErrorContains(t, err, "link was expired")
+		assert.Nil(t, result)
+
+		repo.AssertExpectations(t)
+	})
+
 	t.Run("success", func(t *testing.T) {
 		caseRepoResult := &core.Link{
 			Short:       "example",

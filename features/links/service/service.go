@@ -28,6 +28,10 @@ func (srv *linkService) GetByShort(ctx context.Context, short string) (*core.Lin
 		return nil, err
 	}
 
+	if time.Now().After(data.ExpiredAt) {
+		return nil, exceptions.NewValidation("link was expired")
+	}
+
 	return data, nil
 }
 
