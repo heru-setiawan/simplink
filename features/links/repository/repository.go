@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"simplink/features/links/core"
 	"simplink/helpers/exceptions"
 	"strings"
@@ -17,6 +18,20 @@ func NewLinkRepository(mysql *gorm.DB) core.Repository {
 
 type linkRepository struct {
 	mysql *gorm.DB
+}
+
+func (repo *linkRepository) GetByShort(ctx context.Context, short string) (*core.Link, error) {
+	mod := new(Link)
+
+	if err := repo.mysql.WithContext(ctx).Where("short = ?", short).First(mod).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, exceptions.NewRepository("link not found")
+		}
+
+		return nil, err
+	}
+
+	return mod.ToEntity(), nil
 }
 
 func (repo *linkRepository) Create(ctx context.Context, data core.Link) error {

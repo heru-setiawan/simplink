@@ -30,6 +30,24 @@ func (_m *Handler) Create(ctx echo.Context) error {
 	return r0
 }
 
+// GetByShort provides a mock function with given fields: ctx
+func (_m *Handler) GetByShort(ctx echo.Context) error {
+	ret := _m.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetByShort")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(echo.Context) error); ok {
+		r0 = rf(ctx)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // NewHandler creates a new instance of Handler. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewHandler(t interface {

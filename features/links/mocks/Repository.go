@@ -32,6 +32,36 @@ func (_m *Repository) Create(ctx context.Context, data core.Link) error {
 	return r0
 }
 
+// GetByShort provides a mock function with given fields: ctx, short
+func (_m *Repository) GetByShort(ctx context.Context, short string) (*core.Link, error) {
+	ret := _m.Called(ctx, short)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetByShort")
+	}
+
+	var r0 *core.Link
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*core.Link, error)); ok {
+		return rf(ctx, short)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string) *core.Link); ok {
+		r0 = rf(ctx, short)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*core.Link)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, short)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // NewRepository creates a new instance of Repository. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewRepository(t interface {

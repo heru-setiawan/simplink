@@ -18,6 +18,19 @@ type linkService struct {
 	repository core.Repository
 }
 
+func (srv *linkService) GetByShort(ctx context.Context, short string) (*core.Link, error) {
+	if err := validateGetByShortLink(short); err != nil {
+		return nil, err
+	}
+
+	data, err := srv.repository.GetByShort(ctx, short)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
 func (srv *linkService) Create(ctx context.Context, data core.Link) (*core.Link, error) {
 	var generatedShort bool
 
