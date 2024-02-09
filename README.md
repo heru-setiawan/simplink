@@ -1,39 +1,30 @@
-# Backend Developer Code Test
+# Simplink
+Simplink API is a service that allows users to shorten long URLs into shorter, more manageable links. built using Golang, MySQL database and also uses clean architecture with unit testing and code coverage reaching 100%. You can do unit testing on the service package for each feature
 
-**Objective:** Create a URL shortener backend using either Golang, Node.js, or Laravel
+### Features
+- Shorten long URLs into concise, easy-to-share links.
+- Redirect users from short links to the original long URLs.
 
-## Requirements:
+### Next Features
+- User section and link management for each user
+- User can monitoring shortener link usages.
+- Caching using redis for better performace.
+- Add premium section for user feature.
 
-1. The shortened link must be unique and have an expiration of 5 years.
-2. Allow the user to customize the URL with a maximum of 16 characters.
-3. The system-generated short URL should be 6 characters.
-4. The system should not have any downtime and must operate as fast as possible.
-5. The system should effectively handle thousands of requests per second for generating unique short URLs.
+## Deployment
+1. Clone Repository
+    ```
+    git clone https://github.com/heru-setiawan/simplink.git
+    ```
+2. Copy & Cofigure .env
 
-## Instructions:
+    You can customize the application's configuration using environment variables. Refer to the docker-compose.yml file or Dockerfile for available environment variables.
 
-1. Provide a RESTful API to shorten a given URL.
-2. The API should return the shortened URL and its expiration date.
-3. Implement a redirection service that, when a user accesses the shortened URL, redirects to the original URL.
-4. Include rate-limiting to prevent abuse.
-5. Implement unit tests to test the functionality of your service.
-6. Document your API endpoints and include a README file with setup instructions.
-7. Document the API using Postman or Swagger.
+    ```
+    mv .env.example .env
+    ```
+3. Build
 
-## Evaluation:
-
-Your solution will be evaluated based on the following criteria:
-
-- Code quality and organization
-- Adherence to the project requirements
-- Use of best practices for API design and security
-- Efficiency of the implemented solution
-- Completeness of the tests and documentation
-- Usage of Docker for setup is considered a plus point
-- Use of caching mechanisms is considered a plus point
-- Using a migration file for MySQL is considered a plus point
-
-## Submission Instructions
-
-- Fork the provided GitHub repository to your personal account. After you have completed the test, commit your code and create a pull request to submit your solution. Please ensure that your repository is public so that we can review your submission.
-- Ensure your submission is submitted within a maximum of 3 days after you receive the email.
+    ```
+    docker compose up -d
+    ```
