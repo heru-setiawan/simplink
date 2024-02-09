@@ -33,6 +33,7 @@ func main() {
 
 	app := echo.New()
 	app.Use(middleware.Logger())
+	app.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(1000)))
 
 	app.GET("/:shorten-link", linkHandler.GetByShort)
 	app.POST("/links", linkHandler.Create)
