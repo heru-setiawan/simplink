@@ -13,6 +13,7 @@ services:
       - MYSQL_PORT=3306
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=simplink
     ports:
       - ${API_PORT}:8000
     depends_on:
